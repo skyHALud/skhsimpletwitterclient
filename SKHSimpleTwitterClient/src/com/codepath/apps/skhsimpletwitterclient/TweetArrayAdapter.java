@@ -1,8 +1,12 @@
 package com.codepath.apps.skhsimpletwitterclient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		public ImageView ivProfileImage;
 		public TextView tvUserName;
 		public TextView tvBody;
+		public TextView tvAge;
 	}
 	
 	public TweetArrayAdapter(Context context, List<Tweet> tweets) {
@@ -36,6 +41,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			h.ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
 			h.tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
 			h.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
+			h.tvAge = (TextView) convertView.findViewById(R.id.tvAge);
 			
 			convertView.setTag(h);
 		} else {
@@ -48,7 +54,25 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		il.displayImage(tweet.getUser().getProfileImageUrl(), h.ivProfileImage);
 		h.tvUserName.setText(tweet.getUser().getScreenName());
 		h.tvBody.setText(tweet.getBody());
+		h.tvAge.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
 		
 		return convertView;
+	}
+	
+	public String getRelativeTimeAgo(String rawJsonDate) {
+		String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+		SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+		sf.setLenient(true);
+	 
+		String relativeDate = "";
+		try {
+			long dateMillis = sf.parse(rawJsonDate).getTime();
+			relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+					System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE).toString();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	 
+		return relativeDate;
 	}
 }
