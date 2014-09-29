@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+
 import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -47,6 +50,19 @@ public class TimelineActivity extends Activity {
 		    	}
 		    }
 	        });
+		
+		SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+            	populateTimeline();
+            	
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+            } 
+        });
 	}
 	
 	@Override
