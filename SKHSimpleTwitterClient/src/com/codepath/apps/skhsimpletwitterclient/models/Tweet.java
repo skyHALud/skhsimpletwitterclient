@@ -1,5 +1,6 @@
 package com.codepath.apps.skhsimpletwitterclient.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-public class Tweet {
+public class Tweet implements Serializable {
+	private static final long serialVersionUID = -7886702499074133575L;
+
 	private String body;
 	private long id;
 	private String createdAt;

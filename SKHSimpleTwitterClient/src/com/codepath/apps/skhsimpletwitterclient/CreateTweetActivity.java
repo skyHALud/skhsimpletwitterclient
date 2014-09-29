@@ -1,6 +1,7 @@
 package com.codepath.apps.skhsimpletwitterclient;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class CreateTweetActivity extends Activity {
-
+	public static final String TWEET_KEY = "tweet";
+	
 	EditText etTweetBody;
 	Button btnTweet;
 	TwitterClient client;
@@ -37,6 +40,14 @@ public class CreateTweetActivity extends Activity {
 					client.setUpdate(tweet, new JsonHttpResponseHandler() {
 						public void onSuccess(int arg0, org.json.JSONObject obj) {
 							Toast.makeText(CreateTweetActivity.this, "Tweet posted", Toast.LENGTH_SHORT).show();
+							
+							Tweet tweet = Tweet.fromJSON(obj);
+							
+							Intent i = new Intent();
+							i.putExtra(TWEET_KEY, tweet);
+							
+							setResult(RESULT_OK, i);
+							finish();
 						};
 						
 						public void onFailure(Throwable arg0, org.json.JSONObject arg1) {

@@ -19,6 +19,7 @@ import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends Activity {
+	public static final int REQUEST_CODE_NEWTWEET = 666;
 	private TwitterClient client;
 	private List<Tweet> tweets;
 	private ArrayAdapter<Tweet> aTweets;
@@ -59,15 +60,21 @@ public class TimelineActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if(item.getItemId() == R.id.action_createtweet) {
 			Intent i = new Intent(TimelineActivity.this, CreateTweetActivity.class);
-        	
-        	//if(settings != null) i.putExtra(SEARCH_SETTINGS_EXTRA, settings);
-//        	startActivityForResult(i, REQUEST_CODE_SEARCHFILTER);
-			startActivity(i);
+        	startActivityForResult(i, REQUEST_CODE_NEWTWEET);
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+      // REQUEST_CODE is defined above
+      if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_NEWTWEET) {
+    	 Tweet value = (Tweet) data.getSerializableExtra(CreateTweetActivity.TWEET_KEY);
+         
+         aTweets.insert(value, 0); // Add the new tweet to the top of the list
+      }
+    } 
 
 	public void populateTimeline() {
 		populateTimeline(1);
