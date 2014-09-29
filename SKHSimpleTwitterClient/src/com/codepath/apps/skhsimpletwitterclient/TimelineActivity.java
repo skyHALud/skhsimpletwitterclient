@@ -6,8 +6,12 @@ import java.util.List;
 import org.json.JSONArray;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -44,6 +48,27 @@ public class TimelineActivity extends Activity {
 	        });
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.create_tweet, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.action_createtweet) {
+			Intent i = new Intent(TimelineActivity.this, CreateTweetActivity.class);
+        	
+        	//if(settings != null) i.putExtra(SEARCH_SETTINGS_EXTRA, settings);
+//        	startActivityForResult(i, REQUEST_CODE_SEARCHFILTER);
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+
 	public void populateTimeline() {
 		populateTimeline(1);
 	}
