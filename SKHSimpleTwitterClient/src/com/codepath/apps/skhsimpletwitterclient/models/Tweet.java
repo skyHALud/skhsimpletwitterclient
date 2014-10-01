@@ -8,22 +8,33 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Column.ForeignKeyAction;
+import com.activeandroid.annotation.Table;
+
 import android.util.Log;
 
-public class Tweet implements Serializable {
+@Table(name="Tweet")
+public class Tweet extends Model implements Serializable {
 	private static final long serialVersionUID = -7886702499074133575L;
 
-	private String body;
-	private long id;
-	private String createdAt;
+	@Column(name = "Body") private String body;
+	
+	@Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+	private long uid;
+	
+	@Column(name = "createdAt") private String createdAt;
+	
+	@Column(name = "User", onUpdate = ForeignKeyAction.CASCADE, onDelete = ForeignKeyAction.CASCADE)
 	private User user;
 	
 	public String getBody() {
 		return body;
 	}
 
-	public long getId() {
-		return id;
+	public long getRemoteId() {
+		return uid;
 	}
 
 	public String getCreatedAt() {
@@ -38,7 +49,7 @@ public class Tweet implements Serializable {
 		Tweet tweet = new Tweet();
 		try {
 			tweet.body = jsonObject.getString("text");
-			tweet.id = jsonObject.getLong("id");
+			tweet.uid = jsonObject.getLong("id");
 			tweet.createdAt = jsonObject.getString("created_at");
 			tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
 		} catch(JSONException ex) {
@@ -71,7 +82,7 @@ public class Tweet implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Tweet [body=" + body + ", id=" + id + ", createdAt="
+		return "Tweet [body=" + body + ", id=" + uid + ", createdAt="
 				+ createdAt + ", user=" + user + "]";
 	}
 	

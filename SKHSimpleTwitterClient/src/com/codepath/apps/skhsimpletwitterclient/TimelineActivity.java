@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +17,9 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-
+import com.activeandroid.query.Delete;
 import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
+import com.codepath.apps.skhsimpletwitterclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends Activity {
@@ -46,7 +47,7 @@ public class TimelineActivity extends Activity {
 		    public void onLoadMore(int page, int totalItemsCount) {
 		    	if(!tweets.isEmpty()) {
 		    		Tweet last = tweets.get(tweets.size() - 1);
-		    		populateTimeline(last.getId()); 
+		    		populateTimeline(last.getRemoteId()); 
 		    	}
 		    }
 	        });
@@ -96,11 +97,31 @@ public class TimelineActivity extends Activity {
 		populateTimeline(1);
 	}
 	
-	public void populateTimeline(long sinceId) {
+	public void populateTimeline(final long sinceId) {
 		client.getHomeTimeline(sinceId, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray json) {
-				aTweets.addAll(Tweet.fromJSONArray(json));
+				if(sinceId == 1) {
+					long start = System.currentTimeMillis();
+					Log.d("debug", "Delete offline tweets");
+					// Refreshing the whole data set so delete all local data. Honor foreign key relationships.
+					new Delete().from(Tweet.class).execute();
+					new Delete().from(User.class).execute(); 
+					Log.d("debug", "DONE in " + (System.currentTimeMillis() - start) + "ms");
+				}
+				
+				List<Tweet> newTweets = Tweet.fromJSONArray(json);
+				aTweets.addAll(newTweets);
+
+				long start = System.currentTimeMillis();
+				Log.d("debug", "Saving tweets offline");
+				for(Tweet t : newTweets) {
+					if(!t.getUser().exists()) {
+						t.getUser().save();
+					}
+					t.save();
+				}
+				Log.d("debug", "DONE in " + (System.currentTimeMillis() - start) + "ms");
 			}
 			
 			@Override
