@@ -19,12 +19,14 @@ import com.codepath.apps.skhsimpletwitterclient.EndlessScrollListener;
 import com.codepath.apps.skhsimpletwitterclient.R;
 import com.codepath.apps.skhsimpletwitterclient.TweetArrayAdapter;
 import com.codepath.apps.skhsimpletwitterclient.TwitterApplication;
+import com.codepath.apps.skhsimpletwitterclient.TwitterClient;
 import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
 
 public abstract class TweetsListFragment extends Fragment {
 	private List<Tweet> tweets;
 	private ArrayAdapter<Tweet> aTweets;
 	private ListView lvTweets;
+	protected TwitterClient client;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,9 @@ public abstract class TweetsListFragment extends Fragment {
 		// Non-view initialization
 		tweets = new ArrayList<Tweet>();
 		aTweets = new TweetArrayAdapter(getActivity(), tweets);
+		
+		client = TwitterApplication.getRestClient();
+		populateTweetsList();
 	}
 	
 	@Override
@@ -51,7 +56,7 @@ public abstract class TweetsListFragment extends Fragment {
 		    	
 		    	if(!tweets.isEmpty()) {
 		    		Tweet last = tweets.get(tweets.size() - 1);
-		    		populateTimeline(last.getRemoteId()); 
+		    		populateTweetsList(last.getRemoteId()); 
 		    	}
 		    }
 	        });
@@ -62,7 +67,7 @@ public abstract class TweetsListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 // Your code to refresh the list here.
-            	populateTimeline();
+            	populateTweetsList();
             	
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
@@ -72,11 +77,11 @@ public abstract class TweetsListFragment extends Fragment {
 		return v;
 	}
 	
-	public void populateTimeline() {
-		populateTimeline(-1);
+	public void populateTweetsList() {
+		populateTweetsList(-1);
 	}
 	
-	protected abstract void populateTimeline(long maxId);
+	protected abstract void populateTweetsList(long maxId);
 	
 	public void addAll(Collection<Tweet> newTweets) {
 		aTweets.addAll(newTweets);

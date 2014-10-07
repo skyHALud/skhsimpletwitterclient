@@ -4,21 +4,17 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import android.os.Bundle;
 import android.util.Log;
 
 import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class HomeTimelineFragment extends TweetsListFragment {
+public class MentionsTimelineFragment extends TweetsListFragment {
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-	
-	@Override
-	public void populateTweetsList(final long maxId) {
-		client.getHomeTimeline(maxId, new JsonHttpResponseHandler() {
+	protected void populateTweetsList(long maxId) {
+		// TODO reduce code duplication
+		client.getMentionsTimeline(maxId, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray json) {
 //				if(maxId == -1) {
@@ -51,4 +47,5 @@ public class HomeTimelineFragment extends TweetsListFragment {
 			}
 		});
 	}
+
 }
