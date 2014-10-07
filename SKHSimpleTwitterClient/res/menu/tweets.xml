@@ -4,6 +4,14 @@
         android:id="@+id/action_createtweet"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_createtweet"
         android:title="@string/action_createtweet"/>
+    
+    <item
+        android:id="@+id/action_profile"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_profile"
+        android:showAsAction="always"
+        android:title="@string/action_profile"/>
 
 </menu>

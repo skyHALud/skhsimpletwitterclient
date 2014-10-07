@@ -61,15 +61,22 @@ public class TimelineActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.create_tweet, menu);
+	    inflater.inflate(R.menu.tweets, menu);
 	    return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if(item.getItemId() == R.id.action_createtweet) {
+		switch(item.getItemId()) {
+		case R.id.action_createtweet:
 			Intent i = new Intent(TimelineActivity.this, CreateTweetActivity.class);
         	startActivityForResult(i, REQUEST_CODE_NEWTWEET);
+		break;
+		
+		case R.id.action_profile:
+			i = new Intent(this, ProfileActivity.class);
+			startActivity(i);
+		break;
 		}
 		
 		return super.onOptionsItemSelected(item);
