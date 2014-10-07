@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.Intent;
+import android.sax.StartElementListener;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -31,7 +34,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Tweet tweet = getItem(position);
+		final Tweet tweet = getItem(position);
 		ViewHolder h;
 		
 		if(convertView == null) {
@@ -42,6 +45,16 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			h.tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
 			h.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
 			h.tvAge = (TextView) convertView.findViewById(R.id.tvAge);
+			
+			h.ivProfileImage.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getContext(), ProfileActivity.class);
+					i.putExtra("user", tweet.getUser());
+					getContext().startActivity(i);
+				}
+			});
 			
 			convertView.setTag(h);
 		} else {

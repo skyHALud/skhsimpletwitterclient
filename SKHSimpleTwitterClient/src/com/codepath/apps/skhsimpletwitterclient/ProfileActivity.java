@@ -20,7 +20,13 @@ public class ProfileActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		
-		loadProfileInfo();
+		User u = (User) getIntent().getSerializableExtra("user");
+		
+		if(u != null) {
+			populateProfileHader(u);
+		} else {
+			loadProfileInfo();
+		}
 	}
 
 	public void loadProfileInfo() {
