@@ -64,15 +64,13 @@
 
     </RelativeLayout>
     
-    <fragment
-        android:id="@+id/fragmentUserTimeline"
-        android:name="com.codepath.apps.skhsimpletwitterclient.fragments.UserTimelineFragment"
+    <FrameLayout
+        android:id="@+id/flContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/rlProfileInfo"
-        tools:layout="@layout/fragment_tweets_list" />
+        android:layout_below="@id/rlProfileInfo" />
 
 </RelativeLayout>

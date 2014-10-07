@@ -46,20 +46,21 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			h.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
 			h.tvAge = (TextView) convertView.findViewById(R.id.tvAge);
 			
-			h.ivProfileImage.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Intent i = new Intent(getContext(), ProfileActivity.class);
-					i.putExtra("user", tweet.getUser());
-					getContext().startActivity(i);
-				}
-			});
-			
 			convertView.setTag(h);
 		} else {
 			h = (ViewHolder) convertView.getTag();
 		}
+		
+		// Always update the listener to point to the currently selected user
+		h.ivProfileImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getContext(), ProfileActivity.class);
+				i.putExtra("user", tweet.getUser());
+				getContext().startActivity(i);
+			}
+		});
 		
 		h.ivProfileImage.setImageResource(android.R.color.transparent);
 		

@@ -7,14 +7,25 @@ import org.json.JSONArray;
 import android.util.Log;
 
 import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
+import com.codepath.apps.skhsimpletwitterclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class UserTimelineFragment extends TweetsListFragment {
 
+	private User user;
+
+	public UserTimelineFragment() {
+		super();
+	}
+	
+	public UserTimelineFragment(User u) {
+		this.user = u;
+	}
+	
 	@Override
 	protected void populateTweetsList(long maxId) {
 		// TODO reduce code duplication
-		client.getUserTimeline(maxId, new JsonHttpResponseHandler() {
+		client.getUserTimeline(user != null ? user.getUid() : null, maxId, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray json) {
 //				if(maxId == -1) {

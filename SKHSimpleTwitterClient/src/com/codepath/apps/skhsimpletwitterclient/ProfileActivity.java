@@ -4,11 +4,13 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.skhsimpletwitterclient.fragments.UserTimelineFragment;
 import com.codepath.apps.skhsimpletwitterclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,7 +25,7 @@ public class ProfileActivity extends FragmentActivity {
 		User u = (User) getIntent().getSerializableExtra("user");
 		
 		if(u != null) {
-			populateProfileHader(u);
+			populateUI(u);
 		} else {
 			loadProfileInfo();
 		}
@@ -37,12 +39,12 @@ public class ProfileActivity extends FragmentActivity {
 				
 				getActionBar().setTitle("@" + u.getScreenName());
 				
-				populateProfileHader(u);
+				populateUI(u);
 			}
 		});
 	}
 
-	protected void populateProfileHader(User u) {
+	protected void populateUI(User u) {
 		TextView tvName = (TextView) findViewById(R.id.tvName);
 		TextView tvTagline = (TextView) findViewById(R.id.tvTagline);
 		TextView tvFollowers = (TextView) findViewById(R.id.tvFollowers);
@@ -53,9 +55,19 @@ public class ProfileActivity extends FragmentActivity {
 		tvTagline.setText(u.getTagline());
 		tvFollowers.setText(u.getFollowersCount() + " Followers");
 		tvFollowing.setText(u.getFriendsCount() + " Following");
+
 		// load profile image
-		
 		ImageLoader.getInstance().displayImage(u.getProfileImageUrl(), ivMyProfileImage);
+		
+		// Instantiate user timeline fragment with the current user ID
+		// Create a transaction
+    	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    	// Hide, show, add, remove fragments
+    	
+    	ft.replace(R.id.flContainer, new UserTimelineFragment(u));
+    	
+    	// Execute the transaction
+    	ft.commit();
 	}
 
 	@Override
