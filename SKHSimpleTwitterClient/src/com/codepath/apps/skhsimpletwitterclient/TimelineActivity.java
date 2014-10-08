@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.codepath.apps.skhsimpletwitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.skhsimpletwitterclient.fragments.MentionsTimelineFragment;
@@ -22,12 +23,26 @@ public class TimelineActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// MUST request the feature before setting content view
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
+		
 		setContentView(R.layout.activity_timeline);
 		
 		fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.layout.fragment_tweets_list);
 		
 		setupTabs();
 	}
+	
+	// Should be called manually when an async task has started
+    public void showProgressBar() {
+        setProgressBarIndeterminateVisibility(true); 
+    }
+    
+    // Should be called when an async task has finished
+    public void hideProgressBar() {
+    	setProgressBarIndeterminateVisibility(false); 
+    }
 	
 	private void setupTabs() {
 		ActionBar actionBar = getActionBar();
