@@ -17,8 +17,8 @@ import com.codepath.apps.skhsimpletwitterclient.listeners.FragmentTabListener;
 import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
 
 public class TimelineActivity extends FragmentActivity {
+	private static final String HOME_TIMELINE_FRAGMENT_TAG = "home";
 	public static final int REQUEST_CODE_NEWTWEET = 666;
-	private TweetsListFragment fragmentTweetsList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,6 @@ public class TimelineActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
 		
 		setContentView(R.layout.activity_timeline);
-		
-		fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.layout.fragment_tweets_list);
 		
 		setupTabs();
 	}
@@ -55,7 +53,7 @@ public class TimelineActivity extends FragmentActivity {
 			.setIcon(R.drawable.ic_action_home)
 			.setTag(HomeTimelineFragment.class.getSimpleName())
 			.setTabListener(
-				new FragmentTabListener<HomeTimelineFragment>(R.id.flContainer, this, "home",
+				new FragmentTabListener<HomeTimelineFragment>(R.id.flContainer, this, HOME_TIMELINE_FRAGMENT_TAG,
 								HomeTimelineFragment.class));
 
 		actionBar.addTab(tab1);
@@ -103,6 +101,8 @@ public class TimelineActivity extends FragmentActivity {
       if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_NEWTWEET) {
     	 Tweet value = (Tweet) data.getSerializableExtra(CreateTweetActivity.TWEET_KEY);
          
+
+ 		 TweetsListFragment fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentByTag(HOME_TIMELINE_FRAGMENT_TAG);
     	 fragmentTweetsList.insertFirst(value); // Add the new tweet to the top of the list
       }
     } 
