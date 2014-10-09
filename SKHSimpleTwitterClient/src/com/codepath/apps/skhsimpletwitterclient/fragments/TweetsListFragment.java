@@ -14,10 +14,8 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.codepath.apps.skhsimpletwitterclient.EndlessScrollListener;
@@ -33,6 +31,7 @@ public abstract class TweetsListFragment extends Fragment {
 	private ArrayAdapter<Tweet> aTweets;
 	private ListView lvTweets;
 	protected TwitterClient client;
+	private SwipeRefreshLayout swipeContainer;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +66,7 @@ public abstract class TweetsListFragment extends Fragment {
 		    }
 	        });
 		
-		SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+		swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -101,6 +100,7 @@ public abstract class TweetsListFragment extends Fragment {
 			return new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(JSONArray json) {
+					swipeContainer.setRefreshing(false);
 	//				if(maxId == -1) {
 	//					long start = System.currentTimeMillis();
 	//					Log.d("debug", "Delete offline tweets");
@@ -113,6 +113,11 @@ public abstract class TweetsListFragment extends Fragment {
 					List<Tweet> newTweets = Tweet.fromJSONArray(json);
 					if(newTweets.size() > 0 && newTweets.get(0).getRemoteId() == maxId) {
 						newTweets.remove(0);
+					}
+					
+					if(maxId == -1) {
+						// This is either a refresh or the first load
+						aTweets.clear();
 					}
 					
 					addAll(newTweets);
@@ -132,6 +137,8 @@ public abstract class TweetsListFragment extends Fragment {
 				public void onFailure(Throwable arg0, String arg1) {
 					Log.d("debug", arg0.toString(), arg0);
 					Log.d("debug", arg1);
+					
+					swipeContainer.setRefreshing(false);
 				}
 			};
 		}
