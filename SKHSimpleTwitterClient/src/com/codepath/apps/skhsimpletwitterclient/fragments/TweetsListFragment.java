@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.json.JSONArray;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +26,7 @@ import com.codepath.apps.skhsimpletwitterclient.TweetArrayAdapter;
 import com.codepath.apps.skhsimpletwitterclient.TwitterApplication;
 import com.codepath.apps.skhsimpletwitterclient.TwitterClient;
 import com.codepath.apps.skhsimpletwitterclient.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public abstract class TweetsListFragment extends Fragment {
 	private List<Tweet> tweets;
@@ -93,4 +96,43 @@ public abstract class TweetsListFragment extends Fragment {
 	public void insertFirst(Tweet firstTweet) {
 		aTweets.insert(firstTweet, 0);
 	}
+
+	public JsonHttpResponseHandler getDefaultResponseHandler(final long maxId) {
+			return new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(JSONArray json) {
+	//				if(maxId == -1) {
+	//					long start = System.currentTimeMillis();
+	//					Log.d("debug", "Delete offline tweets");
+	//					// Refreshing the whole data set so delete all local data. Honor foreign key relationships.
+	//					new Delete().from(Tweet.class).execute();
+	//					new Delete().from(User.class).execute(); 
+	//					Log.d("debug", "DONE in " + (System.currentTimeMillis() - start) + "ms");
+	//				}
+					
+					List<Tweet> newTweets = Tweet.fromJSONArray(json);
+					if(newTweets.size() > 0 && newTweets.get(0).getRemoteId() == maxId) {
+						newTweets.remove(0);
+					}
+					
+					addAll(newTweets);
+	
+	//				long start = System.currentTimeMillis();
+	//				Log.d("debug", "Saving tweets offline");
+	//				for(Tweet t : newTweets) {
+	//					if(!t.getUser().exists()) {
+	//						t.getUser().save();
+	//					}
+	//					t.save();
+	//				}
+	//				Log.d("debug", "DONE in " + (System.currentTimeMillis() - start) + "ms");
+				}
+				
+				@Override
+				public void onFailure(Throwable arg0, String arg1) {
+					Log.d("debug", arg0.toString(), arg0);
+					Log.d("debug", arg1);
+				}
+			};
+		}
 }
