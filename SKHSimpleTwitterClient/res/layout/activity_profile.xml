@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/ivMyProfileImage"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginRight="10dp"
             android:src="@android:drawable/screen_background_light_transparent" />
 
@@ -47,20 +47,25 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/ivMyProfileImage" >
 
-            <TextView
-                android:id="@+id/tvFollowers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Followers" />
-
-            <TextView
-                android:id="@+id/tvFollowing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="Following" />
-
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvFollowers"
+            android:layout_below="@+id/tvFollowers"
+            android:text="Following"
+            android:textSize="7dp" />
+
+        <TextView
+            android:id="@+id/tvFollowers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvTagline"
+            android:text="Followers"
+            android:textSize="7dp" />
 
     </RelativeLayout>
     
