@@ -43,6 +43,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dp"
         android:text="@string/tweet_age"
-        android:textSize="10dp" />
+        android:textSize="6dp" />
 
 </RelativeLayout>
