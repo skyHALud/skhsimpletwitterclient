@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    >
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -9,6 +13,7 @@
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
         android:src="@drawable/ic_launcher" />
 
     <TextView
@@ -16,8 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
         android:layout_toRightOf="@+id/ivProfileImage"
-        android:text="@string/foo_label" />
+        android:text="@string/foo_label"
+        android:textSize="10dp" />
 
     <TextView
         android:id="@+id/tvBody"
@@ -25,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tvUserName"
         android:layout_below="@+id/tvUserName"
-        android:text="@string/tweet_body" />
+        android:text="@string/tweet_body"
+        android:textSize="10dp" />
 
     <TextView
         android:id="@+id/tvAge"
@@ -33,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="@string/tweet_age" />
+        android:layout_marginRight="5dp"
+        android:text="@string/tweet_age"
+        android:textSize="10dp" />
 
 </RelativeLayout>

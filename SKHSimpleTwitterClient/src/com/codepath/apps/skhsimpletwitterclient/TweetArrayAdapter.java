@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.content.Intent;
-import android.sax.StartElementListener;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,8 +66,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		
 		ImageLoader il = ImageLoader.getInstance();
 		il.displayImage(tweet.getUser().getProfileImageUrl(), h.ivProfileImage);
-		h.tvUserName.setText(tweet.getUser().getScreenName());
-		h.tvBody.setText(tweet.getBody());
+		h.tvUserName.setText(Html.fromHtml("<b>" + tweet.getUser().getScreenName() + "</b>"));
+		h.tvBody.setText(Html.fromHtml("<i>" + tweet.getBody() + "</i>"));
 		h.tvAge.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
 		
 		return convertView;
