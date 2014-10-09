@@ -2,7 +2,7 @@ skhsimpletwitterclient
 ======================
 
 ## Time spent
-~8 hours
+~12 hours
 
 ## User stories
 
@@ -22,6 +22,22 @@ User can compose a new tweet
 
 Advanced: User can refresh tweets timeline by pulling down to refresh (i.e pull-to-refresh)
 
+User can switch between Timeline and Mention views using tabs.
+
+1. User can view their home timeline tweets.
+1. User can view the recent mentions of their username.
+1. User can scroll to bottom of either of these lists and new tweets will load ("infinite scroll")
+
+User can navigate to view their own profile
+
+1. User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+
+User can click on the profile image in any tweet to see another user's profile.
+1. User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
+1. Profile view should include that user's timeline
+
+Advanced: Improve the user interface and theme the app to feel twitter branded
+
 ## Gif recording
 
-![gif recording](simple-twitter-client-1.0-recording.gif)
+![gif recording](simple-twitter-client-1.1-recording.gif)
